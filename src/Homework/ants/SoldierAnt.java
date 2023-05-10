@@ -8,7 +8,6 @@ import Homework.colony.Colony;
 import Homework.colony.Outside;
 
 /**
- *
  * @author peete
  */
 public class SoldierAnt extends Ant {
@@ -17,7 +16,6 @@ public class SoldierAnt extends Ant {
     private Colony colony;
     private Outside outside;
 
-
     public SoldierAnt(Colony colony, Outside outside) {
         this.id = "SA" + String.format("%04d", nextId);
         this.colony = colony;
@@ -25,6 +23,9 @@ public class SoldierAnt extends Ant {
         nextId++;
     }
 
+    /**
+     * Main action where the soldier goes to train in the instruction area and after that rests.
+     */
     private void mainAction() throws InterruptedException {
         colony.goToInstructionArea(this);
         logger.info(this + " is training");
@@ -36,6 +37,9 @@ public class SoldierAnt extends Ant {
         colony.leaveRestArea(this);
     }
 
+    /**
+     * Action where ant goes and eats.
+     */
     public void eat() throws InterruptedException {
         logger.info(this + " is eating");
         colony.goToEatingArea(this).getConsumableFood(this);
@@ -43,6 +47,9 @@ public class SoldierAnt extends Ant {
         colony.leaveEatingArea(this);
     }
 
+    /**
+     * Action where ant deals with the insect that invades the colony.
+     */
     private void dealWithThreat() throws InterruptedException {
         colony.exit(this);
         logger.info(this + " is dealing with the threat");
@@ -51,8 +58,11 @@ public class SoldierAnt extends Ant {
         colony.enter(this);
     }
 
-
-
+    /**
+     * Run method is where all the action calling is taken place.
+     * It runs forever with the while(true) so the ant won't stop.
+     * When the soldier ant is interrupted - colony gets attacked or system is paused - then it goes to the catch method.
+     */
     @Override
     public void run() {
             try {
@@ -76,6 +86,6 @@ public class SoldierAnt extends Ant {
                         }
                     } catch (InterruptedException ex) {}
                 }
-                }
+            }
         }
 }

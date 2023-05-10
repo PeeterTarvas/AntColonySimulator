@@ -10,8 +10,11 @@ import Homework.colony.Outside;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is an instance runner class so that in the GUI parts of the
+ * application the instance could be run more smooth, it's also a separate thread.
+ */
 public class Runner extends Thread {
-
 
     private final Colony colony = new Colony();
     private final Outside outside = new Outside(colony);
@@ -19,6 +22,10 @@ public class Runner extends Thread {
     private List<Ant> antList = new ArrayList<>();
     private boolean isStopped = false;
 
+    /**
+     * Main method where the simulation of the ant creation happens.
+     * Also, when stop is called the thread is interrupted so that the creation of new ats will be immediate.
+     */
     @Override
     public void run() {
         Ant ant;
@@ -29,7 +36,7 @@ public class Runner extends Thread {
                     if (counter == 3) {
                         ant = new SoldierAnt(colony, outside);
                     } else if (counter == 4) {
-                        ant = new ChildAnt(colony, outside);
+                        ant = new ChildAnt(colony);
                         counter = 0;
                     } else {
                         ant = new WorkerAnt(colony, outside);
@@ -50,6 +57,9 @@ public class Runner extends Thread {
         }
     }
 
+    /**
+     * Helper method for stopping all the threads that ants have.
+     */
     public void stopProcess() {
         interrupt();
         for (Ant ant: antList) {
@@ -57,6 +67,9 @@ public class Runner extends Thread {
         }
     }
 
+    /**
+     * Helper method for resuming all the threads that ants have.
+     */
     public void resumeProcess() {
         isStopped = false;
         for (Ant ant: antList) {
@@ -65,6 +78,9 @@ public class Runner extends Thread {
 
     }
 
+    /**
+     * Helper method for putting this thread to sleep.
+     */
     private void sleep() {
         while (isStopped) {
             try {

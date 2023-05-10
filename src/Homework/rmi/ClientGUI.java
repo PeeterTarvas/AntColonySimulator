@@ -12,19 +12,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * This is the GUI class for the RMI section.
+ * Basically how it works is that each second the client updates its fields by making a request to the server
+ * and getting current information about the ant colony.
  * @author peete
  */
 public class ClientGUI extends javax.swing.JFrame {
     
-    RemoteInterface server;
+    private RemoteInterface server;
 
     /**
      * Creates new form ClientGUI
      */
     public ClientGUI() {
         try {
-            this.server = (RemoteInterface) Naming.lookup("//127.0.0.1/MyObject");
+            this.server = (RemoteInterface) Naming.lookup("//127.0.0.1/server");
         } catch (NotBoundException | MalformedURLException | RemoteException ex) {
             Logger.getLogger(ClientGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -161,7 +163,7 @@ public class ClientGUI extends javax.swing.JFrame {
     
     private void updateJTextField1() {
         try {
-            jTextField1.setText(String.valueOf(this.server.nrOfAntsOutsideColony()));
+            jTextField1.setText(String.valueOf(this.server.getNrOfAntsOutsideColony()));
         } catch (RemoteException e) {
             Logger.getLogger(ClientGUI.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -169,7 +171,7 @@ public class ClientGUI extends javax.swing.JFrame {
     
     private void updateJTextField2() {
         try {
-            jTextField2.setText(String.valueOf(this.server.nrOfAntsInsideColony()));
+            jTextField2.setText(String.valueOf(this.server.getNrOfAntsInsideColony()));
         } catch (RemoteException e) {
             Logger.getLogger(ClientGUI.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -177,7 +179,7 @@ public class ClientGUI extends javax.swing.JFrame {
     
     private void updateJTextField3() {
         try {
-            jTextField3.setText(String.valueOf(this.server.nrOfSoldierAntsDoingInstruction()));
+            jTextField3.setText(String.valueOf(this.server.getNrOfSoldierAntsDoingInstruction()));
         } catch (RemoteException e) {
             Logger.getLogger(ClientGUI.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -185,7 +187,7 @@ public class ClientGUI extends javax.swing.JFrame {
     
     private void updateJTextField4() {
         try {
-            jTextField4.setText(String.valueOf(this.server.nrOfSoldierAntsRepellingInvasion()));
+            jTextField4.setText(String.valueOf(this.server.getNrOfSoldierAntsRepellingInvasion()));
         } catch (RemoteException e) {
             Logger.getLogger(ClientGUI.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -193,7 +195,7 @@ public class ClientGUI extends javax.swing.JFrame {
     
     private void updateJTextField5() {
         try {
-            jTextField5.setText(String.valueOf(this.server.nrOfBabyAntsAtEatingArea()));
+            jTextField5.setText(String.valueOf(this.server.getNrOfBabyAntsAtEatingArea()));
         } catch (RemoteException e) {
             Logger.getLogger(ClientGUI.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -201,7 +203,7 @@ public class ClientGUI extends javax.swing.JFrame {
     
     private void updateJTextField6() {
         try {
-            jTextField6.setText(String.valueOf(this.server.nrOfBabyAntsAtShelter()));
+            jTextField6.setText(String.valueOf(this.server.getNrOfBabyAntsAtShelter()));
         } catch (RemoteException e) {
             Logger.getLogger(ClientGUI.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -254,6 +256,11 @@ public class ClientGUI extends javax.swing.JFrame {
 
         new Thread(() -> {
             while (true) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 clientGUI.updateFields();
             }
 

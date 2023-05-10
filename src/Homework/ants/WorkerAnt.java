@@ -29,6 +29,9 @@ public class WorkerAnt extends Ant {
         nextId += 1;
     }
 
+    /**
+     * This is the main action of the harvester ant.
+     */
     private void harvestAction() throws InterruptedException {
         colony.exit(this);
         logger.info(this + " exit colony");
@@ -41,6 +44,9 @@ public class WorkerAnt extends Ant {
         colony.leaveFoodStorageArea(this);
     }
 
+    /**
+     * This is the main action that the food moving ants have.
+     */
     private void movingAction() throws InterruptedException {
         colony.goToFoodStorageArea(this).getFoodFromStorageArea(this);
         logger.info(this + " gets food from storage");
@@ -51,6 +57,9 @@ public class WorkerAnt extends Ant {
         colony.leaveEatingArea(this);
     }
 
+    /**
+     * This is the action where the worker ant takes a break.
+     */
     private void takeBreak() throws InterruptedException {
         logger.info(this + " eats");
         colony.goToEatingArea(this).getConsumableFood(this);
@@ -62,6 +71,10 @@ public class WorkerAnt extends Ant {
         colony.leaveRestArea(this);
     }
 
+    /**
+     * Run method is where all the action calling is taken place.
+     * It runs forever with the while(true) so the ant won't stop.
+     */
     @Override
     public void run() {
         int counter = 0;
@@ -93,12 +106,18 @@ public class WorkerAnt extends Ant {
         }
     }
 
+    /**
+     * Method for giving food to the eating area
+     */
     public Integer giveFood() {
         Integer temp = food;
         food = 0;
         return temp;
     }
 
+    /**
+     * Method for getting food from storage area, so it can be sent to eating area
+     */
     public Integer getFood(Integer foodAmount) {
         food += foodAmount;
         return foodAmount;

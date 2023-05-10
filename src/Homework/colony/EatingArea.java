@@ -13,7 +13,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Logger;
 /**
- *
+ * Eating area class, one thing to know is that food amount is stored as semaphore permits.
  * @author peete
  */
 public class EatingArea {
@@ -29,6 +29,9 @@ public class EatingArea {
         ants.put(WorkerAnt.class, new ArrayList<>());
     }
 
+    /**
+     * @return the number of baby ants int the eating area.
+     */
     public Integer nrOfBabyAntsAtEatingArea() {
         int size = 0;
         antsSetLock.readLock().lock();
@@ -38,6 +41,10 @@ public class EatingArea {
 
     }
 
+    /**
+     * Add ant to the eating areas HashMap, lock is used so there would not be any conflicts.
+     * @param ant that is added to the eating area
+     */
     public void addAnt(Ant ant) {
         antsSetLock.writeLock().lock();
         if (ants.containsKey(ant.getClass())) {
@@ -52,6 +59,10 @@ public class EatingArea {
         antsSetLock.writeLock().unlock();
     }
 
+    /**
+     * Remove ant from the eating area, a lock is used here as well so there would not be any conflicts.
+     * @param ant that is removed from the eating area.
+     */
     public void removeAnt(Ant ant) {
         antsSetLock.writeLock().lock();
         if (ants.containsKey(ant.getClass())) {
@@ -62,12 +73,20 @@ public class EatingArea {
         antsSetLock.writeLock().unlock();
     }
 
+    /**
+     * Method where the worker ant places food to the eating area that is taken from the shelter area.
+     * @param workerAnt that places the food.
+     */
     public void placeFoodAtEatingArea(WorkerAnt workerAnt) throws InterruptedException {
         workerAnt.threadSleep(workerAnt.getRandomSleepTime(1000,2000));
         foodAtEatingArea.release(workerAnt.giveFood());
         logger.info("Now food at EATING AREA: " + foodAtEatingArea.availablePermits());
     }
 
+    /**
+     * Return consumable food that the ant can eat.
+     * @param ant
+     */
     public void getConsumableFood(Ant ant) {
         try {
             foodAtEatingArea.acquire(ant.consumeFood());
@@ -76,6 +95,10 @@ public class EatingArea {
         }
     }
 
+    /**
+     * Remove all the soldier ants form the eating area.
+     * This method is used when an invasive insect attacks the colony and is called from the Colony class.
+     */
     public void removeSoldierAnts() {
         antsSetLock.writeLock().lock();
         ants.get(SoldierAnt.class).clear();

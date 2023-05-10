@@ -11,21 +11,27 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author peete    
+ * @author peete
+ *  This is the abstract class that all the other ant classes: ChildAnt, SoldierAnt and WorkerAnt extend.
  */
-public class Ant extends Thread {
+public abstract class Ant extends Thread {
 
     protected Logger logger = MyLogger.getMyLogger();
 
     protected String id;
-
     protected boolean isStopped = false;
 
+    /**
+     * This will be overwritten in the child classes
+     */
     @Override
     public void run() {
-
     }
 
+    /**
+     * This method is for putting the thread to sleep for some time
+     * @param milliseconds of sleep
+     */
     public void threadSleep(int milliseconds) throws InterruptedException {
         try {
             Thread.sleep(milliseconds);
@@ -35,11 +41,19 @@ public class Ant extends Thread {
         }
     }
 
+    /**
+     * Generates random sleep time
+     * @param minMillis is the lower-bound of the generation
+     * @param maxMillis is the upper-bound of the generation
+     */
     public int getRandomSleepTime(int minMillis, int maxMillis) {
         Random rand = new Random();
         return rand.nextInt(maxMillis - minMillis + 1) + minMillis;
     }
 
+    /**
+     * This method is to simulate the ant eating food
+     */
     public Integer consumeFood() {
         return 4;
     }
@@ -49,6 +63,9 @@ public class Ant extends Thread {
         return id;
     }
 
+    /**
+     * This method is helper method for stopping the thread
+     */
     public void stopThread() {
         isStopped = true;
         this.interrupt();

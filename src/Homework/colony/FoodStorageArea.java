@@ -20,11 +20,14 @@ public class FoodStorageArea {
     private ReadWriteLock antsListLock = new ReentrantReadWriteLock();
     private ArrayList<Ant> ants = new ArrayList<>();
     private Logger logger = MyLogger.getMyLogger();
-
     public ArrayList<Ant> getAnts() {
         return ants;
     }
 
+    /**
+     * Add ant to the storage area.
+     * Only 10 ants are allowed to be in the area, this is implemented by acquiring semaphores.
+     */
     public void addAnt(Ant ant) {
         try {
             foodStorageAreaLimit.acquire();
@@ -36,6 +39,9 @@ public class FoodStorageArea {
         antsListLock.writeLock().unlock();
     }
 
+    /**
+     * Removes an ant from the storage area. Also releases one semaphore.
+     */
     public void removeAnt(Ant ant) {
         antsListLock.writeLock().lock();
         ants.remove(ant);
@@ -43,12 +49,20 @@ public class FoodStorageArea {
         foodStorageAreaLimit.release();
     }
 
+    /**
+     *  This method gets food that the ant has gathered and adds them to the storage.
+     *  This is done by giving the semaphore permits from the ant.
+     */
     public void placeFoodAtStorageArea(WorkerAnt workerAnt) throws InterruptedException {
         workerAnt.threadSleep(workerAnt.getRandomSleepTime(2000, 4000));
         foodAtStorageArea.release(workerAnt.giveFood());
         logger.info("Now food at storage: " + String.valueOf(foodAtStorageArea.availablePermits()));
     }
 
+    /**
+     * Get food from the storage area.
+     * This is for the worker ants that move food between storage and eating area.
+     */
     public void getFoodFromStorageArea(WorkerAnt workerAnt) throws InterruptedException {
         workerAnt.threadSleep(workerAnt.getRandomSleepTime(1000, 2000));
         try {

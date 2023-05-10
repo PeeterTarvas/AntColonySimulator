@@ -9,12 +9,10 @@ import Homework.utilities.MyLogger;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
- *
+ * This is the server class for the RMI method.
  * @author peete
  */
 public class ServerClass extends UnicastRemoteObject implements RemoteInterface {
@@ -28,32 +26,30 @@ public class ServerClass extends UnicastRemoteObject implements RemoteInterface 
     }
 
     @Override
-    public Integer nrOfAntsOutsideColony() {
+    public Integer getNrOfAntsOutsideColony() {
         return runner.getOutside().getNrOfAnts();
     }
-
     @Override
-    public Integer nrOfAntsInsideColony() {
+    public Integer getNrOfAntsInsideColony() {
         return runner.getColony().getNrOfAntsInsideColony();
     }
 
     @Override
-    public Integer nrOfSoldierAntsDoingInstruction() {
+    public Integer getNrOfSoldierAntsDoingInstruction() {
         return runner.getColony().getInstructionArea().getNrOfAntsAtInstructionArea();
     }
-
     @Override
-    public Integer nrOfSoldierAntsRepellingInvasion() {
+    public Integer getNrOfSoldierAntsRepellingInvasion() {
         return runner.getOutside().getNrOfAntsRepellingInvasion();
     }
 
     @Override
-    public Integer nrOfBabyAntsAtEatingArea() {
+    public Integer getNrOfBabyAntsAtEatingArea() {
         return runner.getColony().getEatingArea().nrOfBabyAntsAtEatingArea();
     }
 
     @Override
-    public Integer nrOfBabyAntsAtShelter() {
+    public Integer getNrOfBabyAntsAtShelter() {
         return runner.getColony().getShelter().nrOfChildAntsAtShelter();
     }
 
@@ -64,10 +60,8 @@ public class ServerClass extends UnicastRemoteObject implements RemoteInterface 
 
     public static void main(String[] args) {
         try {
-                //Instantiate the object to be registered
-            ServerClass obj = new ServerClass();
-            Registry registry = LocateRegistry.createRegistry(1099); //Launch rmiregistry in localhot
-            Naming.rebind("//127.0.0.1/MyObject", obj); //The object is accessible for clients
+            ServerClass server = new ServerClass();
+            Naming.rebind("//127.0.0.1/server", server);
             System.out.println("The object MyObject was registered");
         } catch (Exception e) {
             System.out.println("Error: " +

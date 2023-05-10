@@ -5,6 +5,11 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+/**
+ * This class is for the creating the logging capabilities to the colony system.
+ * The logs are generated to the logs.log file which is in the utilities package - same as this class.
+ * @author peete
+ */
 public class MyLogger {
 
     private static Logger myLogger = null;

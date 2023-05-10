@@ -29,6 +29,10 @@ public class InstructionArea {
         return ants;
     }
 
+    /**
+     * Remove all the soldier ants form the eating area.
+     * This method is used when an invasive insect attacks the colony and is called from the Colony class.
+     */
     public void removeSoldierAnts() {
         antsListLock.writeLock().lock();
         ants.clear();

@@ -14,12 +14,18 @@ public class Shelter {
     private ReadWriteLock antsListLock = new ReentrantReadWriteLock();
     private ArrayList<Ant> ants = new ArrayList<>();
 
+    /**
+     * Add ant to the shelter.
+     */
     public void addAnt(Ant ant) {
         antsListLock.writeLock().lock();
         ants.add(ant);
         antsListLock.writeLock().unlock();
     }
 
+    /**
+     * Remove ant from the shelter.
+     */
     public void removeAnt(Ant ant) {
         antsListLock.writeLock().lock();
         ants.remove(ant);

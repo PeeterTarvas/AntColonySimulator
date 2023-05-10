@@ -8,22 +8,22 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- *
+ * Interface for realizing the Server classes methods.
  * @author peete
  */
 public interface RemoteInterface extends Remote {
 
-    Integer nrOfAntsOutsideColony() throws RemoteException;
+    Integer getNrOfAntsOutsideColony() throws RemoteException;
 
-    Integer nrOfAntsInsideColony() throws RemoteException;
+    Integer getNrOfAntsInsideColony() throws RemoteException;
 
-    Integer nrOfSoldierAntsDoingInstruction() throws RemoteException;
+    Integer getNrOfSoldierAntsDoingInstruction() throws RemoteException;
 
-    Integer nrOfSoldierAntsRepellingInvasion() throws RemoteException;
+    Integer getNrOfSoldierAntsRepellingInvasion() throws RemoteException;
 
-    Integer nrOfBabyAntsAtEatingArea() throws RemoteException;
+    Integer getNrOfBabyAntsAtEatingArea() throws RemoteException;
 
-    Integer nrOfBabyAntsAtShelter() throws RemoteException;
+    Integer getNrOfBabyAntsAtShelter() throws RemoteException;
 
     void generateThreat() throws RemoteException;
 

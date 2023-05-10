@@ -38,6 +38,9 @@
             colony.setOutside(this);
         }
 
+        /**
+         * @return the number of ants outside the colony.
+         */
         public Integer getNrOfAnts() {
             int nrOfAnts = 0;
             nrOfAnts += getNrOfAntsRepellingInvasion();
@@ -47,6 +50,9 @@
             return nrOfAnts;
         }
 
+        /**
+         * @return nr of ants dealing with the invasion of the colony.
+         */
         public Integer getNrOfAntsRepellingInvasion() {
             int nrOfAnts = 0;
             soldierAntsListLock.writeLock().lock();
@@ -55,6 +61,10 @@
             return nrOfAnts;
         }
 
+        /**
+         * Add ant to the Outside area object, if it is a soldier ant then they have a different list.
+         * @param ant to be added to the colony.
+         */
         public void addAnt(Ant ant) {
             if (SoldierAnt.class == ant.getClass()) {
                 soldierAntsListLock.writeLock().lock();
@@ -67,6 +77,10 @@
             }
         }
 
+        /**
+         * Remove ant from the outside area.
+         * @param ant to be removed.
+         */
         public void removeAnt(Ant ant) {
             if (SoldierAnt.class == ant.getClass()) {
                 soldierAntsListLock.writeLock().lock();
@@ -79,11 +93,20 @@
             }
         }
 
+        /**
+         * Harvest new food that ant brings back to colony.
+         * @param ant that harvests food.
+         */
         public void harvestFood(WorkerAnt ant) throws InterruptedException {
             ant.threadSleep(4000);
             ant.getFood(5);
         }
 
+        /**
+         * If soldier ant is sent to outside to deal with an invasion then he/she calls this area.
+         * The soldier ant will wait for other ants, this is realized with CyclicBarrier, then fights the invasion for 20 seconds.
+         * @param ant that deals with the invasion
+         */
         public void dealWithThreat(Ant ant) throws InterruptedException {
             logger.info(ant + " has arrived");
             try {
@@ -97,6 +120,10 @@
             colony.setColonyIsUnderAttackFalse();
         }
 
+        /**
+         * This method is for generating a threat to the colony by setting colonyIsUnderAttack = true,
+         * initing the CyclicBarrier and interrupting the Soldier Ants inside the colony, so they will deal with the threat instantly.
+         */
         public void generateThreat() {
             logger.info("THREAT");
             colony.setColonyIsUnderAttackTrue();
