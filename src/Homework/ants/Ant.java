@@ -55,7 +55,7 @@ public abstract class Ant extends Thread {
      * This method is to simulate the ant eating food
      */
     public Integer consumeFood() {
-        return 4;
+        return 1;
     }
 
     @Override

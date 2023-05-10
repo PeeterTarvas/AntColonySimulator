@@ -9,7 +9,9 @@ import Homework.utilities.MyLogger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Logger;
 /**
@@ -19,6 +21,7 @@ import java.util.logging.Logger;
 public class EatingArea {
 
     private Logger logger = MyLogger.getMyLogger();
+    private Lock foodLock = new ReentrantLock();
     private HashMap<Class<? extends Ant>, ArrayList<Ant>> ants = new HashMap<>();
     private ReadWriteLock antsSetLock = new ReentrantReadWriteLock();
     private Semaphore foodAtEatingArea = new Semaphore(0);
@@ -77,15 +80,17 @@ public class EatingArea {
      * Method where the worker ant places food to the eating area that is taken from the shelter area.
      * @param workerAnt that places the food.
      */
-    public void placeFoodAtEatingArea(WorkerAnt workerAnt) throws InterruptedException {
-        workerAnt.threadSleep(workerAnt.getRandomSleepTime(1000,2000));
-        foodAtEatingArea.release(workerAnt.giveFood());
+    public void placeFoodAtEatingArea(WorkerAnt workerAnt) {
+        try {
+            workerAnt.threadSleep(workerAnt.getRandomSleepTime(1000,2000));
+            foodAtEatingArea.release(workerAnt.giveFood());
+        } catch (InterruptedException e) {}
         logger.info("Now food at EATING AREA: " + foodAtEatingArea.availablePermits());
     }
 
     /**
      * Return consumable food that the ant can eat.
-     * @param ant
+     * @param ant that gets the food
      */
     public void getConsumableFood(Ant ant) {
         try {

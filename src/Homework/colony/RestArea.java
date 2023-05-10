@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package Homework.colony;
 
 import Homework.ants.Ant;
@@ -12,8 +16,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class RestArea {
 
-    ArrayList<Ant> ants = new ArrayList<>();
-
+    private ArrayList<Ant> ants = new ArrayList<>();
     private ReadWriteLock antsSetLock = new ReentrantReadWriteLock();
 
     /**

@@ -67,6 +67,5 @@ public class ServerClass extends UnicastRemoteObject implements RemoteInterface 
             System.out.println("Error: " +
                     e.getMessage()); e.printStackTrace();
         }
-
     }
 }

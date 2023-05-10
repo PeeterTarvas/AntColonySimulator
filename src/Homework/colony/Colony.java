@@ -11,7 +11,9 @@ import Homework.ants.WorkerAnt;
 
 import java.util.*;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
@@ -22,6 +24,8 @@ public class Colony {
 
     private Semaphore enter = new Semaphore(1);
     private Semaphore exit = new Semaphore(2);
+    private Lock enterLock = new ReentrantLock();
+    private Lock exitLock = new ReentrantLock();
     private EatingArea eatingArea = new EatingArea();
     private FoodStorageArea foodStorageArea = new FoodStorageArea();
     private RestArea restArea = new RestArea();
@@ -82,7 +86,9 @@ public class Colony {
      */
     public void enter(Ant ant) throws InterruptedException {
         try {
+            enterLock.lock();
             enter.acquire();
+            enterLock.unlock();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -98,7 +104,9 @@ public class Colony {
      */
     public void exit(Ant ant) throws InterruptedException {
         try {
+            exitLock.lock();
             exit.acquire();
+            exitLock.unlock();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

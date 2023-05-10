@@ -29,6 +29,9 @@ import Homework.utilities.MyLogger;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ */
 public class Main extends javax.swing.JFrame {
 
     private final Runner runner = new Runner();
@@ -346,11 +349,13 @@ public class Main extends javax.swing.JFrame {
                     jTextField7.setText(String.valueOf(runner.getColony().getFoodAtEatingArea()));
                     updateJTextArea1();
                     updateJTextArea2();
+                    Thread.sleep(1000);
                 } catch (Exception e) {}
             }
         }).start();
     }
 
+    
     public void run() {
         runner.start();
     }
